@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVT Collège Maroc</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-light:#28a865;--green-dark:#0f4f2f;--gold:#c9a84c;--red:#c0392b;--bg:#f4f9f4;--white:#fff;--text:#1a2a1a;--gray:#6b7f6b;--shadow:0 8px 32px rgba(26,122,74,.10);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+nav{background:var(--green-dark);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.18);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;}
+.nav-logo .logo-icon{width:38px;height:38px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;color:var(--green-dark);}
+.nav-logo span{color:#fff;font-size:1.2rem;font-weight:700;}
+.nav-logo span em{color:var(--gold);font-style:normal;}
+.nav-links{display:flex;align-items:center;gap:1.2rem;}
+.nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:.9rem;font-weight:500;cursor:pointer;transition:color .2s;}
+.nav-links a:hover{color:var(--gold);}
+.admin-nav-btn{background:rgba(201,168,76,.2);border:1px solid var(--gold);color:var(--gold);padding:6px 16px;border-radius:20px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:background .2s;}
+.admin-nav-btn:hover{background:rgba(201,168,76,.35);}
+.page{display:none;}
+.page.active{display:block;}
+.hero{background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 60%,#2ecc71 100%);padding:80px 2rem 60px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:rgba(201,168,76,.12);border-radius:50%;}
+.hero-badge{display:inline-block;background:rgba(201,168,76,.2);border:1px solid var(--gold);color:var(--gold);padding:4px 16px;border-radius:20px;font-size:.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;color:#fff;line-height:1.15;margin-bottom:16px;}
+.hero h1 span{color:var(--gold);}
+.hero p{color:rgba(255,255,255,.82);font-size:1.05rem;max-width:540px;margin:0 auto 32px;line-height:1.7;}
+.hero-img{width:100%;max-width:480px;border-radius:18px;margin:0 auto 32px;display:block;object-fit:cover;max-height:220px;box-shadow:0 8px 32px rgba(0,0,0,.25);}
+.hero-btn{display:inline-block;background:var(--gold);color:var(--green-dark);padding:13px 36px;border-radius:50px;font-weight:700;font-size:1rem;text-decoration:none;cursor:pointer;border:none;font-family:'Sora',sans-serif;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(201,168,76,.35);}
+.hero-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,.45);}
+section{padding:60px 2rem;max-width:1100px;margin:0 auto;}
+.section-title{text-align:center;font-size:1.7rem;font-weight:800;color:var(--green-dark);margin-bottom:8px;}
+.section-line{width:50px;height:4px;background:var(--gold);border-radius:2px;margin:12px auto 32px;}
+.levels-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.level-card{background:#fff;border-radius:18px;padding:0 0 24px;box-shadow:var(--shadow);border:2px solid transparent;transition:border-color .2s,transform .2s,box-shadow .2s;cursor:pointer;overflow:hidden;}
+.level-card:hover{border-color:var(--green);transform:translateY(-4px);box-shadow:0 16px 40px rgba(26,122,74,.15);}
+.level-card-img{width:100%;height:140px;object-fit:cover;display:block;}
+.level-card-placeholder{width:100%;height:140px;background:linear-gradient(135deg,#e8f5ee,#d0eada);display:flex;align-items:center;justify-content:center;font-size:3rem;}
+.level-card-body{padding:20px 20px 0;}
+.level-card h3{font-size:1.1rem;font-weight:700;color:var(--green-dark);margin-bottom:8px;}
+.level-card p{color:var(--gray);font-size:.88rem;line-height:1.6;margin-bottom:14px;}
+.level-tag{display:inline-block;background:#e8f5ee;color:var(--green);font-size:.78rem;font-weight:600;padding:3px 12px;border-radius:20px;margin-right:6px;margin-bottom:4px;}
+.quiz-list-header{background:linear-gradient(135deg,var(--green-dark),var(--green));padding:50px 2rem 40px;text-align:center;color:#fff;}
+.quiz-list-header h2{font-size:1.8rem;font-weight:800;margin-bottom:8px;}
+.quiz-list-header p{opacity:.85;font-size:.95rem;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:8px 18px;border-radius:30px;font-size:.85rem;cursor:pointer;margin-bottom:20px;transition:background .2s;font-family:'Sora',sans-serif;}
+.back-btn:hover{background:rgba(255,255,255,.25);}
+.quiz-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;padding:40px 2rem;max-width:1000px;margin:0 auto;}
+.quiz-card{background:#fff;border-radius:16px;padding:24px 20px;box-shadow:var(--shadow);cursor:pointer;border:2px solid transparent;transition:all .2s;}
+.quiz-card:hover{border-color:var(--green);transform:translateY(-3px);}
+.quiz-card-icon{font-size:2rem;margin-bottom:12px;}
+.quiz-card h4{font-weight:700;color:var(--green-dark);margin-bottom:6px;font-size:1rem;}
+.quiz-card p{font-size:.82rem;color:var(--gray);}
+.quiz-card .q-count{display:inline-block;background:#e8f5ee;color:var(--green);font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:20px;margin-top:10px;}
+.quiz-header{background:linear-gradient(135deg,var(--green-dark),var(--green));padding:50px 2rem 40px;text-align:center;color:#fff;}
+.quiz-header h2{font-size:2rem;font-weight:800;margin-bottom:8px;}
+.quiz-container{max-width:700px;margin:40px auto;padding:0 1.5rem 60px;}
+.quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.82rem;color:var(--gray);font-weight:600;}
+.progress-wrap{background:#e0ece6;border-radius:10px;height:8px;margin-bottom:28px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:10px;transition:width .4s ease;}
+.question-card{background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 8px 30px rgba(26,122,74,.10);margin-bottom:24px;animation:slideIn .35s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.q-num{display:inline-block;background:var(--green);color:#fff;font-size:.75rem;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:14px;}
+.q-text{font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.55;margin-bottom:24px;}
+.q-img{width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-bottom:18px;}
+.options{display:flex;flex-direction:column;gap:12px;}
+.opt-btn{background:#f4f9f4;border:2px solid #d4e8d9;border-radius:12px;padding:14px 18px;text-align:left;font-family:'Sora',sans-serif;font-size:.92rem;font-weight:500;color:var(--text);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;}
+.opt-btn:hover:not(:disabled){border-color:var(--green);background:#e8f5ee;transform:translateX(4px);}
+.opt-btn.correct{border-color:var(--green);background:#e8f5ee;color:var(--green-dark);font-weight:700;}
+.opt-btn.wrong{border-color:var(--red);background:#fdf0ee;color:var(--red);}
+.opt-btn:disabled{cursor:default;}
+.opt-letter{width:28px;height:28px;border-radius:50%;background:#d4e8d9;color:var(--green-dark);font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,color .2s;}
+.opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+.opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+.feedback{background:#e8f5ee;border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:14px 18px;font-size:.88rem;color:var(--green-dark);line-height:1.6;margin-top:16px;display:none;}
+.feedback.wrong-fb{background:#fdf0ee;border-color:var(--red);color:#7a1a1a;}
+.feedback.visible{display:block;animation:slideIn .3s ease;}
+.next-btn{width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:16px;display:none;transition:background .2s,transform .2s;}
+.next-btn:hover{background:var(--green-dark);transform:translateY(-1px);}
+.next-btn.visible{display:block;animation:slideIn .3s ease;}
+.results-card{background:#fff;border-radius:24px;padding:44px 32px;box-shadow:0 12px 40px rgba(26,122,74,.12);text-align:center;animation:slideIn .4s ease;}
+.score-circle{width:120px;height:120px;border-radius:50%;margin:0 auto 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;}
+.score-num{font-size:2.2rem;line-height:1;}
+.score-sub{font-size:.85rem;color:var(--gray);}
+.res-title{font-size:1.5rem;font-weight:800;color:var(--green-dark);margin-bottom:10px;}
+.res-msg{color:var(--gray);font-size:.95rem;margin-bottom:28px;line-height:1.7;}
+.res-btn{background:var(--green);color:#fff;border:none;padding:13px 32px;border-radius:50px;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;margin:0 6px 8px;transition:background .2s,transform .2s;}
+.res-btn:hover{background:var(--green-dark);transform:translateY(-2px);}
+.res-btn.secondary{background:#e8f5ee;color:var(--green-dark);}
+.res-btn.secondary:hover{background:#d0eada;}
+/* ADMIN */
+.admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;}
+.admin-overlay.open{display:flex;}
+.admin-modal{background:#fff;border-radius:24px;width:95%;max-width:860px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);animation:slideIn .3s ease;}
+.admin-topbar{background:var(--green-dark);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-radius:24px 24px 0 0;position:sticky;top:0;z-index:10;}
+.admin-topbar h2{color:#fff;font-size:1.2rem;font-weight:800;}
+.admin-close{background:rgba(255,255,255,.15);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.admin-tabs{display:flex;gap:0;border-bottom:2px solid #e8f5ee;padding:0 28px;}
+.admin-tab{padding:14px 22px;font-weight:600;font-size:.9rem;cursor:pointer;color:var(--gray);border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .2s,border-color .2s;font-family:'Sora',sans-serif;background:none;border-top:none;border-left:none;border-right:none;}
+.admin-tab.active{color:var(--green);border-bottom-color:var(--green);}
+.admin-content{padding:28px;}
+.admin-section{display:none;}
+.admin-section.active{display:block;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-weight:600;font-size:.85rem;color:var(--green-dark);margin-bottom:6px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:2px solid #d4e8d9;border-radius:10px;font-family:'Sora',sans-serif;font-size:.9rem;color:var(--text);transition:border-color .2s;outline:none;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--green);}
+.form-group textarea{min-height:80px;resize:vertical;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.btn-primary{background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:10px;font-family:'Sora',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:background .2s;}
+.btn-primary:hover{background:var(--green-dark);}
+.btn-danger{background:#fdf0ee;color:var(--red);border:2px solid #f5c6c0;padding:6px 14px;border-radius:8px;font-family:'Sora',sans-serif;font-weight:600;font-size:.8rem;cursor:pointer;}
+.admin-list-item{background:#f4f9f4;border-radius:12px;padding:14px 18px;margin-bottom:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.admin-list-item .item-text{flex:1;font-size:.88rem;line-height:1.5;}
+.admin-list-item .item-text strong{color:var(--green-dark);display:block;margin-bottom:3px;}
+.admin-divider{height:1px;background:#e8f5ee;margin:24px 0;}
+.admin-subtitle{font-size:1rem;font-weight:700;color:var(--green-dark);margin-bottom:16px;}
+.admin-info{background:#e8f5ee;border-radius:10px;padding:12px 16px;font-size:.85rem;color:var(--green-dark);margin-bottom:20px;line-height:1.6;}
+.img-upload-area{border:2px dashed #d4e8d9;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:#fafffe;}
+.img-upload-area:hover{border-color:var(--green);background:#f4f9f4;}
+.img-upload-area input{display:none;}
+.img-preview-thumb{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-top:12px;display:none;}
+.options-builder{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+.option-input-row{display:flex;align-items:center;gap:8px;}
+.option-input-row .opt-label-s{width:28px;height:28px;background:#d4e8d9;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--green-dark);flex-shrink:0;}
+.option-input-row input[type=text]{flex:1;padding:9px 12px;border:2px solid #d4e8d9;border-radius:8px;font-family:'Sora',sans-serif;font-size:.88rem;outline:none;}
+.option-input-row input[type=text]:focus{border-color:var(--green);}
+.option-input-row .correct-radio{accent-color:var(--green);cursor:pointer;width:16px;height:16px;}
+.quiz-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.quiz-sel-btn{padding:7px 16px;border-radius:20px;border:2px solid #d4e8d9;background:#fff;font-family:'Sora',sans-serif;font-size:.83rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all .2s;}
+.quiz-sel-btn.active{border-color:var(--green);background:#e8f5ee;color:var(--green-dark);}
+.save-success{background:#e8f5ee;border:1px solid var(--green);border-radius:10px;padding:12px 18px;color:var(--green-dark);font-weight:600;font-size:.88rem;margin-top:14px;display:none;animation:slideIn .3s ease;}
+footer{background:var(--green-dark);color:rgba(255,255,255,.7);text-align:center;padding:24px;font-size:.85rem;}
+footer span{color:var(--gold);}
+@media(max-width:600px){.hero h1{font-size:1.7rem;}.form-row{grid-template-columns:1fr;}.question-card{padding:20px 14px;}.admin-tabs{overflow-x:auto;}.admin-tab{white-space:nowrap;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="logo-icon">S</div>
+    <span>SVT <em>Collège</em></span>
+  </div>
+  <div class="nav-links">
+    <a onclick="showPage('home')">Accueil</a>
+    <button class="admin-nav-btn" onclick="openAdmin()">⚙️ Admin</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="home-page" class="page active">
+  <div class="hero">
+    <div class="hero-badge">🇲🇦 Programme Maroc – Collège</div>
+    <div id="hero-img-wrap"></div>
+    <h1>Apprends les <span>SVT</span><br>avec des quiz interactifs</h1>
+    <p id="hero-desc">Révise les Sciences de la Vie et de la Terre du collège marocain à travers des quiz engageants et des cours clairs.</p>
+    <button class="hero-btn" onclick="document.getElementById('niveaux').scrollIntoView({behavior:'smooth'})">Commencer maintenant →</button>
+  </div>
+  <section id="niveaux">
+    <div class="section-title">Choisir ton niveau</div>
+    <div class="section-line"></div>
+    <div class="levels-grid" id="levels-grid"></div>
+  </section>
+  <section style="background:#fff;border-radius:24px;padding:48px 40px;box-shadow:var(--shadow);margin-bottom:40px;">
+    <div class="section-title">À propos</div>
+    <div class="section-line"></div>
+    <p style="text-align:center;color:var(--gray);line-height:1.8;max-width:600px;margin:0 auto;" id="about-text">SVT Collège est une plateforme éducative gratuite pour les élèves marocains du collège, alignée sur le programme officiel du Ministère de l'Éducation Nationale.</p>
+  </section>
+</div>
+
+<!-- QUIZ LIST -->
+<div id="quiz-list-page" class="page">
+  <div class="quiz-list-header">
+    <button class="back-btn" onclick="showPage('home')">← Retour</button>
+    <h2 id="ql-title">Niveau</h2>
+    <p id="ql-sub">Choisir un quiz</p>
+  </div>
+  <div class="quiz-cards-grid" id="quiz-cards-grid"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-page" class="page">
+  <div class="quiz-header">
+    <button class="back-btn" onclick="showPage('quiz-list')">← Retour</button>
+    <h2 id="quiz-title-display">Quiz</h2>
+    <p id="quiz-level-display"></p>
+  </div>
+  <div class="quiz-container">
+    <div class="quiz-meta">
+      <span id="q-counter">Question 1 / ?</span>
+      <span id="q-score">Score : 0</span>
+    </div>
+    <div class="progress-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+    <div id="quiz-body"></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-modal">
+    <div class="admin-topbar">
+      <h2>⚙️ Panneau d'administration</h2>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchTab('quizzes')">📝 Quiz</button>
+      <button class="admin-tab" onclick="switchTab('images')">🖼️ Images</button>
+      <button class="admin-tab" onclick="switchTab('textes')">✏️ Textes</button>
+    </div>
+    <div class="admin-content">
+
+      <!-- TAB QUIZ -->
+      <div class="admin-section active" id="tab-quizzes">
+        <div class="admin-info">💡 Crée un nouveau quiz ou sélectionne un quiz existant pour y ajouter des questions.</div>
+
+        <div class="admin-subtitle">Créer un nouveau quiz</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Titre du quiz</label>
+            <input id="new-quiz-title" type="text" placeholder="ex: La digestion">
+          </div>
+          <div class="form-group">
+            <label>Niveau</label>
+            <select id="new-quiz-level">
+              <option value="1AC">1ère Année Collège (1AC)</option>
+              <option value="2AC">2ème Année Collège (2AC)</option>
+              <option value="3AC" selected>3ème Année Collège (3AC)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="max-width:120px;">
+          <label>Icône (emoji)</label>
+          <input id="new-quiz-icon" type="text" placeholder="🔬">
+        </div>
+        <button class="btn-primary" onclick="createQuiz()">✅ Créer le quiz</button>
+
+        <div class="admin-divider"></div>
+        <div class="admin-subtitle">Sélectionner un quiz pour ajouter des questions</div>
+        <div class="quiz-selector" id="admin-quiz-selector"></div>
+        <div id="selected-quiz-name" style="font-size:.85rem;color:var(--gray);margin-bottom:18px;">← Sélectionne un quiz ci-dessus</div>
+
+        <div class="form-group">
+          <label>Texte de la question</label>
+          <textarea id="new-q-text" placeholder="Ex: Qu'est-ce qu'un antigène ?"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Image pour cette question (optionnel)</label>
+          <div class="img-upload-area" onclick="document.getElementById('q-img-upload').click()">
+            <div style="color:var(--gray);font-size:.88rem;">📷 Cliquer pour ajouter une image</div>
+            <input type="file" id="q-img-upload" accept="image/*" onchange="previewQImg(this)">
+            <img id="q-img-preview" class="img-preview-thumb">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Options de réponse &nbsp;<span style="color:var(--gray);font-weight:400;font-size:.8rem;">(coche le 🔘 à droite pour la bonne réponse)</span></label>
+          <div class="options-builder" id="options-builder">
+            <div class="option-input-row"><span class="opt-label-s">A</span><input type="text" placeholder="Option A"><input type="radio" name="correct-opt" class="correct-radio" value="0" title="Bonne réponse"></div>
+            <div class="option-input-row"><span class="opt-label-s">B</span><input type="text" placeholder="Option B"><input type="radio" name="correct-opt" class="correct-radio" value="1" title="Bonne réponse"></div>
+            <div class="option-input-row"><span class="opt-label-s">C</span><input type="text" placeholder="Option C"><input type="radio" name="correct-opt" class="correct-radio" value="2" title="Bonne réponse"></div>
+            <div class="option-input-row"><span class="opt-label-s">D</span><input type="text" placeholder="Option D"><input type="radio" name="correct-opt" class="correct-radio" value="3" title="Bonne réponse"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Explication (montrée après la réponse)</label>
+          <textarea id="new-q-explain" placeholder="Ex: Un antigène est une molécule étrangère reconnue par le système immunitaire..."></textarea>
+        </div>
+        <button class="btn-primary" onclick="addQuestion()">➕ Ajouter la question</button>
+        <div class="save-success" id="q-saved-msg">✅ Question ajoutée avec succès !</div>
+
+        <div class="admin-divider"></div>
+        <div class="admin-subtitle">Questions du quiz sélectionné</div>
+        <div id="admin-questions-list"><p style="color:var(--gray);font-size:.88rem;">Sélectionne un quiz pour voir ses questions.</p></div>
+      </div>
+
+      <!-- TAB IMAGES -->
+      <div class="admin-section" id="tab-images">
+        <div class="admin-info">💡 Ajoute des images à ton site : bannière principale et images des cartes de niveaux.</div>
+        <div class="admin-subtitle">🖼️ Image bannière principale</div>
+        <div class="img-upload-area" onclick="document.getElementById('hero-img-upload').click()">
+          <div style="color:var(--gray);font-size:.88rem;">📷 Choisir une image de bannière</div>
+          <input type="file" id="hero-img-upload" accept="image/*" onchange="setHeroImg(this)">
+          <img id="hero-img-preview-admin" class="img-preview-thumb">
+        </div>
+        <div class="admin-divider"></div>
+        <div class="admin-subtitle">🃏 Images des cartes de niveaux</div>
+        <div id="level-img-editors"></div>
+      </div>
+
+      <!-- TAB TEXTES -->
+      <div class="admin-section" id="tab-textes">
+        <div class="admin-info">💡 Modifie les textes principaux du site.</div>
+        <div class="form-group">
+          <label>Description de l'accueil (sous le titre)</label>
+          <textarea id="edit-hero-desc" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Texte "À propos"</label>
+          <textarea id="edit-about" rows="4"></textarea>
+        </div>
+        <button class="btn-primary" onclick="saveTexts()">💾 Sauvegarder</button>
+        <div class="save-success" id="texts-saved-msg">✅ Textes mis à jour !</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <span>SVT Collège Maroc</span> — Tous droits réservés · Plateforme éducative gratuite</p>
+</footer>
+
+<script>
+// DATA
+const DEFAULT = {
+  heroDesc:"Révise les Sciences de la Vie et de la Terre du collège marocain à travers des quiz engageants et des cours clairs.",
+  aboutText:"SVT Collège est une plateforme éducative gratuite pour les élèves marocains du collège, alignée sur le programme officiel du Ministère de l'Éducation Nationale.",
+  heroImg:null,
+  levels:[
+    {id:'1AC',name:'1ère Année Collège',desc:"Introduction aux êtres vivants, la cellule, l'eau et l'environnement.",emoji:'🌱',img:null,tags:['Cellule','Eau','Écosystèmes']},
+    {id:'2AC',name:'2ème Année Collège',desc:"Digestion, respiration, circulation sanguine et reproduction.",emoji:'🔬',img:null,tags:['Digestion','Respiration','Sang']},
+    {id:'3AC',name:'3ème Année Collège',desc:"Immunité, génétique, géologie et l'évolution des espèces.",emoji:'🧬',img:null,tags:['Immunité','Génétique','Géologie']}
+  ],
+  quizzes:[
+    {id:'immunity',title:"L'immunité",level:'3AC',icon:'🛡️',questions:[
+      {q:"Qu'est-ce que l'immunité ?",opts:["La capacité de l'organisme à se défendre contre les agents pathogènes","Un type de globule rouge","Une maladie du système nerveux","Un organe du corps humain"],correct:0,explain:"L'immunité est l'ensemble des mécanismes de défense contre les agents étrangers.",img:null},
+      {q:"Quel organe produit les lymphocytes ?",opts:["Le foie","La moelle osseuse","Le cœur","Les poumons"],correct:1,explain:"Les lymphocytes sont produits par la moelle osseuse.",img:null},
+      {q:"Qu'est-ce qu'un antigène ?",opts:["Une protéine fabriquée par l'organisme","Toute substance étrangère déclenchant une réponse immunitaire","Un médicament anti-infectieux","Un globule blanc"],correct:1,explain:"Un antigène est toute molécule reconnue comme étrangère par le système immunitaire.",img:null},
+      {q:"Quel est le rôle des anticorps ?",opts:["Transporter l'oxygène","Détruire les globules rouges","Reconnaître et neutraliser les antigènes","Produire les hormones"],correct:2,explain:"Les anticorps reconnaissent un antigène et s'y fixent pour le neutraliser.",img:null},
+      {q:"La réaction inflammatoire fait partie de :",opts:["L'immunité spécifique","L'immunité non spécifique (innée)","La vaccination","La réponse lymphocytaire"],correct:1,explain:"La réaction inflammatoire est une réponse non spécifique, déclenchée contre tout agent étranger.",img:null},
+      {q:"Qu'est-ce qu'un vaccin ?",opts:["Un médicament qui tue les bactéries","Une injection d'antigènes affaiblis","Un globule blanc artificiel","Un antibiotique"],correct:1,explain:"Un vaccin contient des antigènes atténués permettant au système immunitaire de mémoriser la défense.",img:null},
+      {q:"Les lymphocytes B produisent :",opts:["Des antigènes","Des anticorps","Des globules rouges","Des plaquettes"],correct:1,explain:"Les lymphocytes B activés se transforment en plasmocytes qui fabriquent des anticorps.",img:null},
+      {q:"Quel est le rôle des phagocytes ?",opts:["Fabriquer des anticorps","Ingérer et détruire les agents pathogènes","Transporter l'oxygène","Produire des hormones"],correct:1,explain:"Les phagocytes engloutissent et détruisent les agents pathogènes par phagocytose.",img:null},
+      {q:"Qu'est-ce que la mémoire immunitaire ?",opts:["La mémoire du cerveau sur les maladies","Réagir plus vite lors d'une 2ème rencontre avec le même antigène","Un type de vaccin","Une maladie auto-immune"],correct:1,explain:"La mémoire immunitaire permet une réponse plus rapide et plus forte lors d'une 2ème exposition.",img:null},
+      {q:"Le VIH est dangereux car il détruit :",opts:["Les globules rouges","Les plaquettes sanguines","Les lymphocytes T4 (CD4)","Les phagocytes"],correct:2,explain:"Le VIH détruit les lymphocytes T4, rendant l'organisme vulnérable aux infections (SIDA).",img:null},
+      {q:"Différence entre immunité innée et adaptative ?",opts:["Innée = spécifique, adaptative = non spécifique","Innée = immédiate non spécifique ; adaptative = spécifique et mémorisée","Aucune différence","Innée concerne les plantes"],correct:1,explain:"L'immunité innée est rapide et non spécifique. L'adaptative est spécifique et crée une mémoire.",img:null},
+      {q:"Un antibiotique est efficace contre :",opts:["Les virus","Les champignons","Les bactéries","Tous les agents pathogènes"],correct:2,explain:"Les antibiotiques agissent uniquement contre les bactéries, pas contre les virus.",img:null}
+    ]}
+  ]
+};
+
+function loadData(){try{const d=localStorage.getItem('svt_data');return d?JSON.parse(d):JSON.parse(JSON.stringify(DEFAULT));}catch(e){return JSON.parse(JSON.stringify(DEFAULT));}}
+function saveData(d){localStorage.setItem('svt_data',JSON.stringify(d));}
+let DATA=loadData();
+
+// NAV
+let currentLevel=null,currentQuizId=null,currentQuiz=null,qIndex=0,qScore=0,qAnswered=false;
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id+'-page').classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='home')renderHome();
+}
+
+// HOME
+function renderHome(){
+  document.getElementById('hero-desc').textContent=DATA.heroDesc;
+  document.getElementById('about-text').textContent=DATA.aboutText;
+  const hw=document.getElementById('hero-img-wrap');
+  hw.innerHTML=DATA.heroImg?`<img src="${DATA.heroImg}" class="hero-img" alt="SVT">`:'';
+  const grid=document.getElementById('levels-grid');
+  grid.innerHTML=DATA.levels.map(lv=>{
+    const count=DATA.quizzes.filter(q=>q.level===lv.id).length;
+    const imgHtml=lv.img?`<img src="${lv.img}" class="level-card-img" alt="${lv.name}">`:`<div class="level-card-placeholder">${lv.emoji}</div>`;
+    const tags=lv.tags.map(t=>`<span class="level-tag">${t}</span>`).join('');
+    return `<div class="level-card" onclick="openLevel('${lv.id}')">
+      ${imgHtml}<div class="level-card-body">
+      <h3>${lv.name}</h3><p>${lv.desc}</p>${tags}
+      <div style="margin-top:12px;font-size:.8rem;color:var(--green);font-weight:600;">📝 ${count} quiz${count>1?'s':''} disponible${count>1?'s':''}</div>
+      </div></div>`;
+  }).join('');
+}
+
+function openLevel(lvId){
+  currentLevel=lvId;
+  const lv=DATA.levels.find(l=>l.id===lvId);
+  document.getElementById('ql-title').textContent=lv.name;
+  document.getElementById('ql-sub').textContent='Choisir un quiz et commencer à réviser';
+  const quizzes=DATA.quizzes.filter(q=>q.level===lvId);
+  const grid=document.getElementById('quiz-cards-grid');
+  grid.innerHTML=quizzes.length
+    ?quizzes.map(qz=>`<div class="quiz-card" onclick="startQuiz('${qz.id}')"><div class="quiz-card-icon">${qz.icon}</div><h4>${qz.title}</h4><p>${qz.level}</p><span class="q-count">${qz.questions.length} questions</span></div>`).join('')
+    :`<div style="grid-column:1/-1;text-align:center;color:var(--gray);padding:40px;">Aucun quiz pour ce niveau. Ajoutez-en via ⚙️ Admin.</div>`;
+  showPage('quiz-list');
+}
+
+// QUIZ
+function startQuiz(id){
+  currentQuizId=id;currentQuiz=DATA.quizzes.find(q=>q.id===id);qIndex=0;qScore=0;
+  document.getElementById('quiz-title-display').textContent=currentQuiz.icon+' '+currentQuiz.title;
+  document.getElementById('quiz-level-display').textContent=currentQuiz.level+' · SVT · Programme Maroc';
+  showPage('quiz');renderQuestion();
+}
+function renderQuestion(){
+  const total=currentQuiz.questions.length;
+  document.getElementById('q-counter').textContent=`Question ${qIndex+1} / ${total}`;
+  document.getElementById('q-score').textContent=`Score : ${qScore}`;
+  document.getElementById('progress-bar').style.width=`${(qIndex/total)*100}%`;
+  if(qIndex>=total){showResults();return;}
+  const q=currentQuiz.questions[qIndex];const letters=['A','B','C','D'];qAnswered=false;
+  const imgHtml=q.img?`<img src="${q.img}" class="q-img" alt="question">`:'';
+  document.getElementById('quiz-body').innerHTML=`
+    <div class="question-card">
+      <span class="q-num">Question ${qIndex+1}</span>${imgHtml}
+      <div class="q-text">${q.q}</div>
+      <div class="options">${q.opts.map((opt,i)=>`<button class="opt-btn" onclick="selectAnswer(${i})" id="opt-${i}"><span class="opt-letter">${letters[i]}</span>${opt}</button>`).join('')}</div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+    <button class="next-btn" id="next-btn" onclick="nextQ()">${qIndex<total-1?'Question suivante →':'Voir mes résultats 🎉'}</button>`;
+}
+function selectAnswer(idx){
+  if(qAnswered)return;qAnswered=true;
+  const q=currentQuiz.questions[qIndex];const fb=document.getElementById('feedback');
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  if(idx===q.correct){document.getElementById('opt-'+idx).classList.add('correct');qScore++;fb.className='feedback visible';fb.innerHTML=`✅ <strong>Bonne réponse !</strong> ${q.explain}`;}
+  else{document.getElementById('opt-'+idx).classList.add('wrong');document.getElementById('opt-'+q.correct).classList.add('correct');fb.className='feedback wrong-fb visible';fb.innerHTML=`❌ <strong>Mauvaise réponse.</strong> ${q.explain}`;}
+  document.getElementById('next-btn').classList.add('visible');document.getElementById('q-score').textContent=`Score : ${qScore}`;
+}
+function nextQ(){qIndex++;renderQuestion();}
+function showResults(){
+  const total=currentQuiz.questions.length;const pct=Math.round((qScore/total)*100);
+  const color=pct>=85?'#1a7a4a':pct>=60?'#c9a84c':'#c0392b';const bg=pct>=85?'#e8f5ee':pct>=60?'#fff8e8':'#fdecea';
+  const emoji=pct>=85?'🏆':pct>=60?'👍':'📚';
+  const msg=pct>=85?'Excellent ! Tu maîtrises parfaitement ce chapitre !':pct>=60?'Bon travail ! Quelques points à revoir.':'Continue à réviser et retente le quiz !';
+  document.getElementById('progress-bar').style.width='100%';document.getElementById('q-counter').textContent='Terminé !';
+  document.getElementById('quiz-body').innerHTML=`<div class="results-card"><div style="font-size:3rem;margin-bottom:16px;">${emoji}</div>
+    <div class="score-circle" style="background:${bg};border:4px solid ${color};"><span class="score-num" style="color:${color};">${qScore}/${total}</span><span class="score-sub">${pct}%</span></div>
+    <div class="res-title">Quiz terminé !</div><div class="res-msg">${msg}</div>
+    <button class="res-btn" onclick="startQuiz('${currentQuizId}')">🔄 Recommencer</button>
+    <button class="res-btn secondary" onclick="openLevel('${currentLevel}')">← Autres quiz</button></div>`;
+}
+
+// ADMIN
+let adminSelQuizId=null;
+function openAdmin(){
+  document.getElementById('admin-overlay').classList.add('open');
+  renderAdminSelector();renderLevelImgEditors();
+  document.getElementById('edit-hero-desc').value=DATA.heroDesc;
+  document.getElementById('edit-about').value=DATA.aboutText;
+}
+function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open');renderHome();}
+function switchTab(tab){
+  const tabs=['quizzes','images','textes'];
+  document.querySelectorAll('.admin-tab').forEach((t,i)=>t.classList.toggle('active',tabs[i]===tab));
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+function renderAdminSelector(){
+  const sel=document.getElementById('admin-quiz-selector');
+  sel.innerHTML=DATA.quizzes.length
+    ?DATA.quizzes.map(qz=>`<button class="quiz-sel-btn ${adminSelQuizId===qz.id?'active':''}" onclick="selectAdminQuiz('${qz.id}')">${qz.icon} ${qz.title}</button>`).join('')
+    :'<span style="color:var(--gray);font-size:.85rem;">Aucun quiz — crée-en un ci-dessus</span>';
+}
+function selectAdminQuiz(id){
+  adminSelQuizId=id;renderAdminSelector();
+  const qz=DATA.quizzes.find(q=>q.id===id);
+  document.getElementById('selected-quiz-name').innerHTML=`Quiz sélectionné : <strong style="color:var(--green-dark)">${qz.icon} ${qz.title} (${qz.level})</strong>`;
+  renderAdminQList();
+}
+function renderAdminQList(){
+  const qz=DATA.quizzes.find(q=>q.id===adminSelQuizId);
+  const el=document.getElementById('admin-questions-list');
+  if(!qz||!qz.questions.length){el.innerHTML='<p style="color:var(--gray);font-size:.88rem;">Aucune question encore dans ce quiz.</p>';return;}
+  el.innerHTML=qz.questions.map((q,i)=>`<div class="admin-list-item">
+    <div class="item-text"><strong>Q${i+1}: ${q.q}</strong><span style="color:var(--green);font-size:.82rem;">✅ ${q.opts[q.correct]}</span></div>
+    <button class="btn-danger" onclick="deleteQ('${adminSelQuizId}',${i})">🗑️</button></div>`).join('');
+}
+function createQuiz(){
+  const title=document.getElementById('new-quiz-title').value.trim();
+  const level=document.getElementById('new-quiz-level').value;
+  const icon=document.getElementById('new-quiz-icon').value.trim()||'📋';
+  if(!title){alert('Entrez un titre pour le quiz.');return;}
+  const id='quiz_'+Date.now();
+  DATA.quizzes.push({id,title,level,icon,questions:[]});
+  saveData(DATA);
+  document.getElementById('new-quiz-title').value='';document.getElementById('new-quiz-icon').value='';
+  adminSelQuizId=id;renderAdminSelector();
+  document.getElementById('selected-quiz-name').innerHTML=`Quiz sélectionné : <strong style="color:var(--green-dark)">${icon} ${title} (${level})</strong>`;
+  renderAdminQList();
+}
+function addQuestion(){
+  if(!adminSelQuizId){alert('Sélectionne d\'abord un quiz.');return;}
+  const text=document.getElementById('new-q-text').value.trim();
+  const explain=document.getElementById('new-q-explain').value.trim();
+  const optInputs=document.querySelectorAll('#options-builder .option-input-row input[type=text]');
+  const opts=Array.from(optInputs).map(i=>i.value.trim()).filter(o=>o);
+  const cr=document.querySelector('input[name=correct-opt]:checked');
+  if(!text){alert('Entrez le texte de la question.');return;}
+  if(opts.length<2){alert('Entrez au moins 2 options.');return;}
+  if(!cr){alert('Coche la bonne réponse (bouton rond à droite).');return;}
+  const allOpts=Array.from(optInputs).map(i=>i.value.trim());
+  const prev=document.getElementById('q-img-preview');
+  const imgVal=(prev.src&&prev.style.display!=='none')?prev.src:null;
+  const qz=DATA.quizzes.find(q=>q.id===adminSelQuizId);
+  qz.questions.push({q:text,opts:allOpts,correct:parseInt(cr.value),explain:explain||'',img:imgVal});
+  saveData(DATA);
+  document.getElementById('new-q-text').value='';document.getElementById('new-q-explain').value='';
+  optInputs.forEach(i=>i.value='');if(cr)cr.checked=false;
+  prev.style.display='none';prev.src='';
+  renderAdminQList();
+  const msg=document.getElementById('q-saved-msg');msg.style.display='block';setTimeout(()=>msg.style.display='none',2500);
+}
+function deleteQ(quizId,idx){
+  if(!confirm('Supprimer cette question ?'))return;
+  DATA.quizzes.find(q=>q.id===quizId).questions.splice(idx,1);
+  saveData(DATA);renderAdminQList();
+}
+function previewQImg(input){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();r.onload=e=>{const img=document.getElementById('q-img-preview');img.src=e.target.result;img.style.display='block';};r.readAsDataURL(f);
+}
+function setHeroImg(input){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();r.onload=e=>{DATA.heroImg=e.target.result;saveData(DATA);const p=document.getElementById('hero-img-preview-admin');p.src=e.target.result;p.style.display='block';};r.readAsDataURL(f);
+}
+function renderLevelImgEditors(){
+  document.getElementById('level-img-editors').innerHTML=DATA.levels.map(lv=>`
+    <div style="margin-bottom:22px;">
+      <div style="font-weight:700;color:var(--green-dark);margin-bottom:8px;">${lv.emoji} ${lv.name}</div>
+      <div class="img-upload-area" onclick="document.getElementById('lv-img-${lv.id}').click()">
+        <div style="color:var(--gray);font-size:.88rem;">📷 Choisir une image</div>
+        <input type="file" id="lv-img-${lv.id}" accept="image/*" onchange="setLevelImg(this,'${lv.id}')">
+        ${lv.img?`<img src="${lv.img}" class="img-preview-thumb" style="display:block;">`:''}
+      </div></div>`).join('');
+}
+function setLevelImg(input,lvId){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();r.onload=e=>{const lv=DATA.levels.find(l=>l.id===lvId);lv.img=e.target.result;saveData(DATA);renderLevelImgEditors();};r.readAsDataURL(f);
+}
+function saveTexts(){
+  DATA.heroDesc=document.getElementById('edit-hero-desc').value.trim()||DATA.heroDesc;
+  DATA.aboutText=document.getElementById('edit-about').value.trim()||DATA.aboutText;
+  saveData(DATA);const msg=document.getElementById('texts-saved-msg');msg.style.display='block';setTimeout(()=>msg.style.display='none',2500);
+}
+
+renderHome();
+</script>
+</body>
+</html>
